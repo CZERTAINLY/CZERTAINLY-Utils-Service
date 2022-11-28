@@ -77,6 +77,10 @@ public class CertificateUtilsServiceImpl implements CertificateUtilsService {
                 x509Certificate.getNotBefore().getTime(),
                 x509Certificate.getNotAfter().getTime(),
                 x509Certificate.getSerialNumber().toString(16),
+                x509Certificate.getVersion(),
+                x509Certificate.getSigAlgName(),
+                x509Certificate.getPublicKey().getAlgorithm(),
+                x509Certificate.getPublicKey().getEncoded(),
                 x509Certificate.getSubjectAlternativeNames()
         );
     }
