@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/v1/utils/oid")
+@RequestMapping("/v1/oid")
 public class OidUtilsController {
 
     @Autowired

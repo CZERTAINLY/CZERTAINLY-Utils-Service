@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("/v1/utils/certificate")
+@RequestMapping("/v1/certificate")
 public class CertificateUtilsController {
 
     @Autowired
