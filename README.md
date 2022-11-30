@@ -5,6 +5,7 @@
 This Utils Service contains support function for platform components, for example:
 - consistent parsing certificate information, including certification request
 - consistent decoding and encoding certificates
+- certification request parsing
 - information about object identifiers
 
 ## Exposed endpoints
@@ -12,6 +13,7 @@ This Utils Service contains support function for platform components, for exampl
 | Endpoint                                                                                                | Short description                                                                                      |
 |---------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------|
 | [CertificateUtilsController](src/main/java/com/czertainly/utils/api/v1/CertificateUtilsController.java) | Certificate handling support tools that contains for example parsing of certificate in various formats |
+| [RequestUtilsController](src/main/java/com/czertainly/utils/api/v1/RequestUtilsController.java)         | Certification request handling support tools                                                           |
 | [OidUtilsController](src/main/java/com/czertainly/utils/api/v1/OidUtilsController.java)                 | Details about object identifiers like friendly name                                                    |
 
 ## Docker container
