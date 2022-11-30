@@ -4,9 +4,9 @@ import com.czertainly.utils.data.x509.X509CertificateAsn1Data;
 import com.czertainly.utils.data.x509.X509CertificateBasicData;
 import com.czertainly.utils.data.x509.X509CertificateExtendedData;
 import com.czertainly.utils.dto.*;
-import com.czertainly.utils.enums.ApiError;
+import com.czertainly.utils.enums.CertificateUtilsError;
 import com.czertainly.utils.enums.CertificateType;
-import com.czertainly.utils.exception.CertificateParsingException;
+import com.czertainly.utils.exception.CertificateUtilsException;
 import com.czertainly.utils.service.CertificateUtilsService;
 import org.bouncycastle.asn1.ASN1Primitive;
 import org.bouncycastle.asn1.util.ASN1Dump;
@@ -24,7 +24,7 @@ import java.security.cert.X509Certificate;
 public class CertificateUtilsServiceImpl implements CertificateUtilsService {
 
     @Override
-    public ParseCertificateResponseDto parseCertificate(CertificateType certificateType, ParseCertificateRequestDto parseCertificateRequestDto) throws CertificateParsingException {
+    public ParseCertificateResponseDto parseCertificate(CertificateType certificateType, ParseCertificateRequestDto parseCertificateRequestDto) throws CertificateUtilsException {
         ParseCertificateResponseDto parseCertificateResponseDto = new ParseCertificateResponseDto();
 
         switch (certificateType) {
@@ -35,7 +35,7 @@ public class CertificateUtilsServiceImpl implements CertificateUtilsService {
                     x509Certificate = (X509Certificate) CertificateFactory.getInstance("X.509")
                             .generateCertificate(new ByteArrayInputStream(parseCertificateRequestDto.getCertificate()));
                 } catch (CertificateException e) {
-                    throw new CertificateParsingException(HttpStatus.BAD_REQUEST, ApiError.CERTIFICATE_PARSING_ISSUE, e);
+                    throw new CertificateUtilsException(HttpStatus.BAD_REQUEST, CertificateUtilsError.CERTIFICATE_PARSING_ERROR, e);
                 }
                 switch (parseCertificateRequestDto.getParseType()) {
                     case BASIC -> parseCertificateResponseDto.setData(parseX509CertificateBasicData(x509Certificate));
@@ -43,18 +43,18 @@ public class CertificateUtilsServiceImpl implements CertificateUtilsService {
                         try {
                             parseCertificateResponseDto.setData(parseX509CertificateExtendedData(x509Certificate));
                         } catch (java.security.cert.CertificateParsingException e) {
-                            throw new CertificateParsingException(HttpStatus.BAD_REQUEST, ApiError.CERTIFICATE_PARSING_ISSUE, e);
+                            throw new CertificateUtilsException(HttpStatus.BAD_REQUEST, CertificateUtilsError.CERTIFICATE_PARSING_ERROR, e);
                         }
                     }
                     case ASN1 -> {
                         //parseCertificateResponseDto.setData(new X509CertificateAsn1Data(ASN1Dump.dumpAsString(parseCertificateRequestDto.getCertificate())));
                         parseCertificateResponseDto.setData(parseX509CertificateAsn1Data(x509Certificate));
                     }
-                    default -> throw new CertificateParsingException(HttpStatus.BAD_REQUEST, ApiError.CERTIFICATE_PARSING_ISSUE, "Unsupported parse type");
+                    default -> throw new CertificateUtilsException(HttpStatus.BAD_REQUEST, CertificateUtilsError.CERTIFICATE_PARSE_TYPE_UNSUPPORTED);
                 }
             }
-            case SSH -> throw new CertificateParsingException(HttpStatus.BAD_REQUEST, ApiError.CERTIFICATE_PARSING_ISSUE, "Unsupported certificate type SSH");
-            default -> throw new CertificateParsingException(HttpStatus.BAD_REQUEST, ApiError.CERTIFICATE_PARSING_ISSUE, "Unsupported certificate type");
+            case SSH -> throw new CertificateUtilsException(HttpStatus.BAD_REQUEST, CertificateUtilsError.CERTIFICATE_TYPE_UNSUPPORTED, "Unsupported certificate type SSH");
+            default -> throw new CertificateUtilsException(HttpStatus.BAD_REQUEST, CertificateUtilsError.CERTIFICATE_TYPE_UNSUPPORTED);
         }
 
         return parseCertificateResponseDto;
@@ -85,21 +85,21 @@ public class CertificateUtilsServiceImpl implements CertificateUtilsService {
         );
     }
 
-    private X509CertificateAsn1Data parseX509CertificateAsn1Data(X509Certificate x509Certificate) throws CertificateParsingException{
+    private X509CertificateAsn1Data parseX509CertificateAsn1Data(X509Certificate x509Certificate) throws CertificateUtilsException {
         try {
             ASN1Primitive derObject = ASN1Primitive.fromByteArray(x509Certificate.getEncoded());
 
             // double-check the size of der object
             if (derObject.getEncoded().length < x509Certificate.getEncoded().length) {
-                throw new CertificateParsingException(
+                throw new CertificateUtilsException(
                         HttpStatus.BAD_REQUEST,
-                        ApiError.CERTIFICATE_PARSING_ISSUE,
+                        CertificateUtilsError.CERTIFICATE_PARSING_ERROR,
                         "ASN1 dump exception"
                 );
             }
             return new X509CertificateAsn1Data(ASN1Dump.dumpAsString(derObject, true));
         } catch (CertificateEncodingException | IOException e) {
-            throw new CertificateParsingException(HttpStatus.BAD_REQUEST, ApiError.CERTIFICATE_ASN1_DUMP_ERROR, e);
+            throw new CertificateUtilsException(HttpStatus.BAD_REQUEST, CertificateUtilsError.CERTIFICATE_ASN1_DUMP_ERROR, e);
         }
 
     }

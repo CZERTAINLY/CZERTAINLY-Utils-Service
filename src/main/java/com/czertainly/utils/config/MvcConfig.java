@@ -16,5 +16,6 @@ public class MvcConfig implements WebMvcConfigurer {
     @Override
     public void addFormatters(FormatterRegistry registry) {
         registry.addConverter(new CertificateTypeToEnumConverter());
+        registry.addConverter(new RequestTypeToEnumConverter());
     }
 }

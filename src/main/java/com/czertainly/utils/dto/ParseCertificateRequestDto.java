@@ -1,6 +1,6 @@
 package com.czertainly.utils.dto;
 
-import com.czertainly.utils.enums.CertificateParseType;
+import com.czertainly.utils.enums.ParseType;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -11,7 +11,7 @@ public class ParseCertificateRequestDto {
     byte[] certificate;
 
     @NotNull(message = "Parse type must not be null")
-    CertificateParseType parseType;
+    ParseType parseType;
 
     public byte[] getCertificate() {
         return certificate;
@@ -21,11 +21,11 @@ public class ParseCertificateRequestDto {
         this.certificate = certificate;
     }
 
-    public CertificateParseType getParseType() {
+    public ParseType getParseType() {
         return parseType;
     }
 
-    public void setParseType(CertificateParseType parseType) {
+    public void setParseType(ParseType parseType) {
         this.parseType = parseType;
     }
 }

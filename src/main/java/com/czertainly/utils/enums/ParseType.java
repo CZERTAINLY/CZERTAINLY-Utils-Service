@@ -1,7 +1,7 @@
 package com.czertainly.utils.enums;
 
-public enum CertificateParseType {
+public enum ParseType {
     BASIC,
     EXTENDED,
-    ASN1;
+    ASN1
 }

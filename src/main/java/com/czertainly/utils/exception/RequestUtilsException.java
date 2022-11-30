@@ -1,16 +1,24 @@
 package com.czertainly.utils.exception;
 
-import com.czertainly.utils.enums.ApiError;
+import com.czertainly.utils.enums.RequestUtilsError;
 import org.springframework.http.HttpStatus;
 
-public class CertificateParsingException extends Exception {
+public class RequestUtilsException extends Exception {
 
     private HttpStatus httpStatus;
     private int code;
     private String error;
     private String detail;
 
-    public CertificateParsingException(HttpStatus httpStatus, ApiError apiError, Throwable cause) {
+    public RequestUtilsException(HttpStatus httpStatus, RequestUtilsError apiError) {
+        super(apiError.getError());
+        this.httpStatus = httpStatus;
+        this.error = apiError.getError();
+        this.code = apiError.getCode();
+        this.detail = apiError.getError();
+    }
+
+    public RequestUtilsException(HttpStatus httpStatus, RequestUtilsError apiError, Throwable cause) {
         super(apiError.getError(), cause);
         this.httpStatus = httpStatus;
         this.error = apiError.getError();
@@ -18,7 +26,7 @@ public class CertificateParsingException extends Exception {
         this.detail = cause.getMessage();
     }
 
-    public CertificateParsingException(HttpStatus httpStatus, ApiError apiError, String details) {
+    public RequestUtilsException(HttpStatus httpStatus, RequestUtilsError apiError, String details) {
         super(apiError.getError());
         this.httpStatus = httpStatus;
         this.error = apiError.getError();

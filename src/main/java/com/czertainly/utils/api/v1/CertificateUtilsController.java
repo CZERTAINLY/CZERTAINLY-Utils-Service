@@ -3,7 +3,7 @@ package com.czertainly.utils.api.v1;
 import com.czertainly.utils.dto.ParseCertificateRequestDto;
 import com.czertainly.utils.dto.ParseCertificateResponseDto;
 import com.czertainly.utils.enums.CertificateType;
-import com.czertainly.utils.exception.CertificateParsingException;
+import com.czertainly.utils.exception.CertificateUtilsException;
 import com.czertainly.utils.service.CertificateUtilsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -25,7 +25,7 @@ public class CertificateUtilsController {
     )
     public ParseCertificateResponseDto parseCertificate(
             @PathVariable CertificateType certificateType,
-            @Valid @RequestBody ParseCertificateRequestDto request) throws CertificateParsingException {
+            @Valid @RequestBody ParseCertificateRequestDto request) throws CertificateUtilsException {
         return  certificateUtilsService.parseCertificate(certificateType, request);
     }
 }

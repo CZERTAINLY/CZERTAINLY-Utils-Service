@@ -2,7 +2,8 @@ package com.czertainly.utils;
 
 import com.czertainly.utils.dto.ApiErrorResponseDto;
 import com.czertainly.utils.dto.ErrorMessageDto;
-import com.czertainly.utils.exception.CertificateParsingException;
+import com.czertainly.utils.exception.CertificateUtilsException;
+import com.czertainly.utils.exception.RequestUtilsException;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.slf4j.Logger;
@@ -85,19 +86,31 @@ public class ExceptionHandlingAdvice {
                 apiErrorResponseDto, new HttpHeaders(), apiErrorResponseDto.getStatus());
     }
 
-    @ExceptionHandler({ CertificateParsingException.class })
-    public ResponseEntity<Object> handleUtilsServiceException(CertificateParsingException ex) {
+    @ExceptionHandler({ CertificateUtilsException.class })
+    public ResponseEntity<Object> handleUtilsServiceException(CertificateUtilsException ex) {
         ErrorMessageDto errorMessage = new ErrorMessageDto(ex.getError(), ex.getClass().getSimpleName(), ex.getDetail());
         if (log.isDebugEnabled()) {
             errorMessage.setStacktrace(ExceptionUtils.getStackTrace(ex));
         }
-        ApiErrorResponseDto apiErrorResponseDto = new ApiErrorResponseDto(ex.getCode(), ex.getHttpStatus(), "There is an issue with certificate parsing", errorMessage);
+        ApiErrorResponseDto apiErrorResponseDto = new ApiErrorResponseDto(ex.getCode(), ex.getHttpStatus(), "There is an issue with certificate", errorMessage);
         apiErrorResponseDto.setTimestamp(Instant.now().toEpochMilli());
         log.error(apiErrorResponseDto.getMessage() + ": " + ExceptionUtils.getStackTrace(ex));
         return new ResponseEntity<>(
                 apiErrorResponseDto, new HttpHeaders(), apiErrorResponseDto.getStatus());
     }
 
+    @ExceptionHandler({ RequestUtilsException.class })
+    public ResponseEntity<Object> handleUtilsServiceException(RequestUtilsException ex) {
+        ErrorMessageDto errorMessage = new ErrorMessageDto(ex.getError(), ex.getClass().getSimpleName(), ex.getDetail());
+        if (log.isDebugEnabled()) {
+            errorMessage.setStacktrace(ExceptionUtils.getStackTrace(ex));
+        }
+        ApiErrorResponseDto apiErrorResponseDto = new ApiErrorResponseDto(ex.getCode(), ex.getHttpStatus(), "There is an issue with certification request", errorMessage);
+        apiErrorResponseDto.setTimestamp(Instant.now().toEpochMilli());
+        log.error(apiErrorResponseDto.getMessage() + ": " + ExceptionUtils.getStackTrace(ex));
+        return new ResponseEntity<>(
+                apiErrorResponseDto, new HttpHeaders(), apiErrorResponseDto.getStatus());
+    }
 
     @ExceptionHandler({ Exception.class })
     public ResponseEntity<Object> handleAll(Exception ex) {
