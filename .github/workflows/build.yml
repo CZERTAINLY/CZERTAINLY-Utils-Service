@@ -70,7 +70,8 @@ jobs:
           ref: gh-pages
       - name: Copy OpenAPI
         run: |
-          cp -R ./openapi/utils-service.yaml ./docs/utils/$GITHUB_REF_NAME
+          mkdir -p docs/utils/$GITHUB_REF_NAME
+          cp -R openapi/utils-service.yaml docs/utils/$GITHUB_REF_NAME
       - name: Commit to docs
         run: |
           git config --global user.name 'GitHub Actions'
