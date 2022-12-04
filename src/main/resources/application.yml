@@ -3,6 +3,9 @@ server:
   ssl:
     enabled: false
 
+api:
+  version: @apiVersion@
+
 logging:
   level:
     com.czertainly.utils: ${LOG_LEVEL:INFO}

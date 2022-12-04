@@ -17,6 +17,7 @@
 
     <properties>
         <java.version>17</java.version>
+        <apiVersion>1.0.0-SNAPSHOT</apiVersion>
         <sonar.projectKey>3KeyCompany_CZERTAINLY-Utils-Service</sonar.projectKey>
     </properties>
 

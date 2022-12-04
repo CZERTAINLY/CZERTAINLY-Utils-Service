@@ -4,6 +4,8 @@ on:
     branches: [develop]
   push:
     branches: [develop]
+    tags:
+      - '*'
   workflow_dispatch:
 
 jobs:
@@ -70,8 +72,9 @@ jobs:
           ref: gh-pages
       - name: Copy OpenAPI
         run: |
-          mkdir -p docs/utils/$GITHUB_REF_NAME
+          mkdir -p docs/utils/$GITHUB_REF_NAME/images
           cp -R openapi/utils-service.yaml docs/utils/$GITHUB_REF_NAME
+          cp -r images/* docs/utils/$GITHUB_REF_NAME/images
       - name: Commit to docs
         run: |
           cd docs
