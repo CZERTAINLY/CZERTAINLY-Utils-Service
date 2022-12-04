@@ -74,6 +74,7 @@ jobs:
           cp -R openapi/utils-service.yaml docs/utils/$GITHUB_REF_NAME
       - name: Commit to docs
         run: |
+          cd docs
           git config --global user.name 'GitHub Actions'
           git config --global user.email 'interfaces@users.noreply.github.com'
           git add -A
