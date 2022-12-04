@@ -28,6 +28,7 @@ jobs:
           restore-keys: ${{ runner.os }}-m2
       - name: Build
         env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
         run: mvn -B -U verify
   build:
     if: github.event_name != 'pull_request'
