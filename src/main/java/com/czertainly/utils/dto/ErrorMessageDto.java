@@ -1,13 +1,36 @@
 package com.czertainly.utils.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ErrorMessageDto {
 
+    @Schema(
+            description = "Specific error message",
+            requiredMode = Schema.RequiredMode.REQUIRED,
+            example = "Cannot parse field certificate"
+    )
     private String error;
+
+    @Schema(
+            description = "Type of the error",
+            requiredMode = Schema.RequiredMode.REQUIRED,
+            example = "InvalidFormatException"
+    )
     private String type;
+
+    @Schema(
+            description = "Details about the error",
+            requiredMode = Schema.RequiredMode.REQUIRED,
+            example = "Invalid field parseType value"
+    )
     private String detail;
+
+    @Schema(
+            description = "Optional stacktrace and other debug information when debug is enabled",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED
+    )
     private String stacktrace;
 
     public ErrorMessageDto() {

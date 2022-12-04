@@ -1,6 +1,7 @@
 package com.czertainly.utils.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import io.swagger.v3.oas.annotations.media.Schema;
 import org.springframework.http.HttpStatus;
 
 import java.util.Collections;
@@ -12,10 +13,38 @@ public class ApiErrorResponseDto {
     /**
      * Timestamp in epoch / unix format
      */
+    @Schema(
+            description = "Timestamp of the error in epoch / unix format",
+            requiredMode = Schema.RequiredMode.REQUIRED,
+            example = "1670146708406"
+    )
     private long timestamp;
+
+    @Schema(
+            description = "Error code",
+            requiredMode = Schema.RequiredMode.REQUIRED,
+            example = "81"
+    )
     private int code;
+
+    @Schema(
+            description = "Http status code",
+            requiredMode = Schema.RequiredMode.REQUIRED,
+            example = "400"
+    )
     private HttpStatus status;
+
+    @Schema(
+            description = "Error message",
+            requiredMode = Schema.RequiredMode.REQUIRED,
+            example = "Arguments not valid"
+    )
     private String message;
+
+    @Schema(
+            description = "Detailed list of errors",
+            requiredMode = Schema.RequiredMode.REQUIRED
+    )
     private List<ErrorMessageDto> errors;
 
     public ApiErrorResponseDto() {

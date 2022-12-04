@@ -25,8 +25,8 @@ public enum RequestUtilsError {
         return code;
     }
 
-    @Override
-    public String toString() {
-        return code + ": " + error;
-    }
+    //@Override
+    //public String toString() {
+    //    return code + ": " + error;
+    //}
 }

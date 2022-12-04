@@ -20,9 +20,9 @@ public enum CertificateType {
         return code;
     }
 
-    @Override
-    public String toString() {
-        return code + ": " + type;
-    }
+    //@Override
+    //public String toString() {
+    //    return code + ": " + type;
+    //}
 
 }

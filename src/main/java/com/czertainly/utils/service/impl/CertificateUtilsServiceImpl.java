@@ -10,15 +10,16 @@ import com.czertainly.utils.exception.CertificateUtilsException;
 import com.czertainly.utils.service.CertificateUtilsService;
 import org.bouncycastle.asn1.ASN1Primitive;
 import org.bouncycastle.asn1.util.ASN1Dump;
+import org.bouncycastle.asn1.x509.GeneralName;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.security.cert.CertificateEncodingException;
-import java.security.cert.CertificateException;
-import java.security.cert.CertificateFactory;
-import java.security.cert.X509Certificate;
+import java.security.cert.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 @Service
 public class CertificateUtilsServiceImpl implements CertificateUtilsService {
@@ -81,7 +82,7 @@ public class CertificateUtilsServiceImpl implements CertificateUtilsService {
                 x509Certificate.getSigAlgName(),
                 x509Certificate.getPublicKey().getAlgorithm(),
                 x509Certificate.getPublicKey().getEncoded(),
-                x509Certificate.getSubjectAlternativeNames()
+                extractSanFromCertificate(x509Certificate)
         );
     }
 
@@ -101,6 +102,24 @@ public class CertificateUtilsServiceImpl implements CertificateUtilsService {
         } catch (CertificateEncodingException | IOException e) {
             throw new CertificateUtilsException(HttpStatus.BAD_REQUEST, CertificateUtilsError.CERTIFICATE_ASN1_DUMP_ERROR, e);
         }
+    }
 
+    private List<String> extractSanFromCertificate(X509Certificate x509Certificate) throws CertificateParsingException {
+        List<String> sans = new ArrayList<>();
+        Collection<List<?>> sanList = x509Certificate.getSubjectAlternativeNames();
+        for (List<?> san : sanList) {
+            String title = "";
+            Integer type = (Integer) san.get(0);
+            if (type == GeneralName.dNSName) {
+                title = "DNS";
+            } else if (type == GeneralName.iPAddress) {
+                title = "IP Address";
+                // name.toASN1Primitive();
+            } else if (type == GeneralName.otherName) {
+                title = "Other Name";
+            }
+            sans.add(title + ": " + san.get(1));
+        }
+        return sans;
     }
 }
