@@ -7,6 +7,6 @@ import com.czertainly.utils.exception.RequestUtilsException;
 
 public interface RequestUtilsService {
 
-    ParseRequestResponseDto parseRequest(RequestType requestType, ParseRequestRequestDto parseRequestRequestDto) throws RequestUtilsException;
+    ParseRequestResponseDto parseRequest(ParseRequestRequestDto parseRequestRequestDto) throws RequestUtilsException;
 
 }

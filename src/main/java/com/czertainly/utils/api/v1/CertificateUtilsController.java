@@ -3,9 +3,11 @@ package com.czertainly.utils.api.v1;
 import com.czertainly.utils.dto.ApiErrorResponseDto;
 import com.czertainly.utils.dto.ParseCertificateRequestDto;
 import com.czertainly.utils.dto.ParseCertificateResponseDto;
+import com.czertainly.utils.dto.RandomCertificateResponseDto;
 import com.czertainly.utils.enums.CertificateType;
+import com.czertainly.utils.enums.CertificateUtilsError;
 import com.czertainly.utils.exception.CertificateUtilsException;
-import com.czertainly.utils.service.CertificateUtilsService;
+import com.czertainly.utils.service.impl.X509CertificateUtilsServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -14,6 +16,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -41,7 +44,7 @@ import javax.validation.Valid;
 public class CertificateUtilsController {
 
     @Autowired
-    private CertificateUtilsService certificateUtilsService;
+    private X509CertificateUtilsServiceImpl x509CertificateUtilsService;
 
     @RequestMapping(
             path = "/{certificateType}/parse",
@@ -67,6 +70,41 @@ public class CertificateUtilsController {
             )
             @PathVariable CertificateType certificateType,
             @Valid @RequestBody ParseCertificateRequestDto request) throws CertificateUtilsException {
-        return  certificateUtilsService.parseCertificate(certificateType, request);
+        switch (certificateType) {
+            case X509:
+                return x509CertificateUtilsService.parseCertificate(request);
+            default:
+                throw new CertificateUtilsException(HttpStatus.BAD_REQUEST, CertificateUtilsError.CERTIFICATE_TYPE_UNSUPPORTED);
+        }
+    }
+
+    @RequestMapping(
+            path = "/{certificateType}/random",
+            method = RequestMethod.GET,
+            produces = {"application/json"}
+    )
+    @Operation(
+            summary = "Generate random certificate"
+    )
+    @ApiResponses(
+            value = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Certificate generated"
+                    )
+            }
+    )
+    public RandomCertificateResponseDto randomCertificate(
+            @Parameter(
+                    description = "Certificate type",
+                    schema = @Schema(implementation = CertificateType.class)
+            )
+            @PathVariable CertificateType certificateType) throws CertificateUtilsException {
+        switch (certificateType) {
+            case X509:
+                return x509CertificateUtilsService.randomCertificate();
+            default:
+                throw new CertificateUtilsException(HttpStatus.BAD_REQUEST, CertificateUtilsError.CERTIFICATE_TYPE_UNSUPPORTED);
+        }
     }
 }
