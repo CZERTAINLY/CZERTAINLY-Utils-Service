@@ -12,6 +12,8 @@ import com.czertainly.utils.tools.X509Tools;
 import org.bouncycastle.asn1.ASN1Primitive;
 import org.bouncycastle.asn1.util.ASN1Dump;
 import org.bouncycastle.operator.OperatorCreationException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +27,8 @@ import java.security.cert.*;
 
 @Service
 public class X509CertificateUtilsServiceImpl implements CertificateUtilsService {
+
+    private static final Logger logger = LoggerFactory.getLogger(X509CertificateUtilsServiceImpl.class);
 
     @Override
     public ParseCertificateResponseDto parseCertificate(ParseCertificateRequestDto parseCertificateRequestDto) throws CertificateUtilsException {
@@ -66,6 +70,19 @@ public class X509CertificateUtilsServiceImpl implements CertificateUtilsService 
         }
 
         return randomCertificateResponseDto;
+    }
+
+    @Override
+    public boolean identifyCertificate(IdentifyCertificateRequestDto identifyCertificateRequestDto) {
+        try {
+            CertificateFactory.getInstance("X.509")
+                    .generateCertificate(new ByteArrayInputStream(identifyCertificateRequestDto.getData()));
+        } catch (CertificateException e) {
+            logger.debug("Identification of X.509 certificate failed", e);
+            return false;
+        }
+
+        return true;
     }
 
     private X509CertificateBasicData parseX509CertificateBasicData(X509Certificate x509Certificate) {

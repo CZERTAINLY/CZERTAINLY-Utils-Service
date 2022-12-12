@@ -7,7 +7,8 @@ public enum CertificateUtilsError {
     CERTIFICATE_TYPE_UNSUPPORTED(303, "Unsupported certificate type"),
     CERTIFICATE_PARSE_TYPE_UNSUPPORTED(304, "Unsupported parse type for certificate"),
     CERTIFICATE_RANDOM_KEYPAIR_ALG_UNSUPPORTED(501, "Unsupported algorithm to generate random keys"),
-    CERTIFICATE_RANDOM_GEN_ERROR(502, "Error when generating random certificate");
+    CERTIFICATE_RANDOM_GEN_ERROR(502, "Error when generating random certificate"),
+    CERTIFICATE_IDENTIFY_UNKNOWN(701, "Unable to identify certificate type");
 
     private final int code;
     private final String error;

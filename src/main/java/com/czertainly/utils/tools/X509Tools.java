@@ -1,7 +1,5 @@
 package com.czertainly.utils.tools;
 
-import com.czertainly.utils.tools.DateTools;
-import com.czertainly.utils.tools.KeyTools;
 import org.bouncycastle.asn1.x500.X500Name;
 import org.bouncycastle.asn1.x509.GeneralName;
 import org.bouncycastle.cert.X509CertificateHolder;

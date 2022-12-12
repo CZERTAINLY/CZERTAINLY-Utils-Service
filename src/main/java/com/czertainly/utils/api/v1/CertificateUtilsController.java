@@ -1,9 +1,6 @@
 package com.czertainly.utils.api.v1;
 
-import com.czertainly.utils.dto.ApiErrorResponseDto;
-import com.czertainly.utils.dto.ParseCertificateRequestDto;
-import com.czertainly.utils.dto.ParseCertificateResponseDto;
-import com.czertainly.utils.dto.RandomCertificateResponseDto;
+import com.czertainly.utils.dto.*;
 import com.czertainly.utils.enums.CertificateType;
 import com.czertainly.utils.enums.CertificateUtilsError;
 import com.czertainly.utils.exception.CertificateUtilsException;
@@ -107,4 +104,35 @@ public class CertificateUtilsController {
                 throw new CertificateUtilsException(HttpStatus.BAD_REQUEST, CertificateUtilsError.CERTIFICATE_TYPE_UNSUPPORTED);
         }
     }
+
+    @RequestMapping(
+            path = "/identify",
+            method = RequestMethod.POST,
+            consumes = {"application/json"},
+            produces = {"application/json"}
+    )
+    @Operation(
+            summary = "Identify certificate type"
+    )
+    @ApiResponses(
+            value = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Certificate identified"
+                    )
+            }
+    )
+    public IdentifyCertificateResponseDto identifyCertificate(
+            @Valid @RequestBody IdentifyCertificateRequestDto request) throws CertificateUtilsException {
+        IdentifyCertificateResponseDto response = new IdentifyCertificateResponseDto();
+
+        if (x509CertificateUtilsService.identifyCertificate(request)) {
+            response.setCertificateType(CertificateType.X509);
+        } else {
+            throw new CertificateUtilsException(HttpStatus.BAD_REQUEST, CertificateUtilsError.CERTIFICATE_IDENTIFY_UNKNOWN);
+        }
+
+        return response;
+    }
+
 }
