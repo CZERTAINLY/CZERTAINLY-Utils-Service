@@ -4,6 +4,6 @@ czertainlyHome="/opt/czertainly"
 source ${czertainlyHome}/static-functions
 
 log "INFO" "Launching Utils Service"
-java -jar ./app.jar
+java $JAVA_OPTS -jar ./app.jar
 
 #exec "$@"

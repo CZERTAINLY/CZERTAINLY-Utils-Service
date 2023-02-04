@@ -20,7 +20,8 @@ This Utils Service contains support function for platform components, for exampl
 
 Utils Service is provided as a Docker container. Use the `docker pull 3keycompany/czertainly-utils-service:tagname` to pull the image from the repository. It can be configured using the following environment variables:
 
-| Variable    | Description                                           | Required                                        | Default value |
-|-------------|-------------------------------------------------------|-------------------------------------------------|---------------|
-| `PORT`      | Port where the service is exposed                     | ![NO](https://img.shields.io/badge/-NO-red.svg) | `8080`        |
-| `LOG_LEVEL` | Logging level, can be one of `INFO`, `DEBUG`, `TRACE` | ![NO](https://img.shields.io/badge/-NO-red.svg) | `INFO`        |
+| Variable    | Description                                              | Required                                        | Default value |
+|-------------|----------------------------------------------------------|-------------------------------------------------|---------------|
+| `PORT`      | Port where the service is exposed                        | ![NO](https://img.shields.io/badge/-NO-red.svg) | `8080`        |
+| `LOG_LEVEL` | Logging level, can be one of `INFO`, `DEBUG`, `TRACE`    | ![NO](https://img.shields.io/badge/-NO-red.svg) | `INFO`        |
+| `JAVA_OPTS` | Customize Java system properties for running application | ![NO](https://img.shields.io/badge/-NO-red.svg) | `N/A`         |
