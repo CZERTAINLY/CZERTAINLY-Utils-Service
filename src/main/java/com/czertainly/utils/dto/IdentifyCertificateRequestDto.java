@@ -14,7 +14,8 @@ public class IdentifyCertificateRequestDto {
 
     @Schema(
             description = "Base64-encoded data to be identified",
-            requiredMode = Schema.RequiredMode.REQUIRED
+            requiredMode = Schema.RequiredMode.REQUIRED,
+            implementation = String.class
     )
     private byte[] data;
 
