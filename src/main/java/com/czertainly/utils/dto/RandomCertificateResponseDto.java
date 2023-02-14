@@ -14,7 +14,8 @@ public class RandomCertificateResponseDto {
 
     @Schema(
             description = "Base64-encoded certificate",
-            requiredMode = Schema.RequiredMode.REQUIRED
+            requiredMode = Schema.RequiredMode.REQUIRED,
+            implementation = String.class
     )
     private byte[] certificate;
 
