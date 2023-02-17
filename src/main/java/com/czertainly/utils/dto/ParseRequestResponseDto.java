@@ -26,7 +26,7 @@ public class ParseRequestResponseDto {
     @Schema(
             description = "Certification request data",
             requiredMode = Schema.RequiredMode.REQUIRED,
-            anyOf = { Pkcs10RequestBasicData.class, Pkcs10RequestExtendedData.class, Pkcs10RequestAsn1Data.class }
+            oneOf = { Pkcs10RequestBasicData.class, Pkcs10RequestExtendedData.class, Pkcs10RequestAsn1Data.class }
     )
     private RequestData data;
 

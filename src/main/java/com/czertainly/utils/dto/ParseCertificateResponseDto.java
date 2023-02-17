@@ -18,7 +18,7 @@ public class ParseCertificateResponseDto {
     @Schema(
             description = "Certificate data",
             requiredMode = Schema.RequiredMode.REQUIRED,
-            anyOf = { X509CertificateBasicData.class, X509CertificateExtendedData.class, X509CertificateAsn1Data.class }
+            oneOf = { X509CertificateBasicData.class, X509CertificateExtendedData.class, X509CertificateAsn1Data.class }
     )
     CertificateData data;
 

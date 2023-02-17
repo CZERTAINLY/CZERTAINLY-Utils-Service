@@ -57,6 +57,8 @@ public class X509Tools {
     public static List<String> extractSanFromCertificate(X509Certificate x509Certificate) throws CertificateParsingException {
         List<String> sans = new ArrayList<>();
         Collection<List<?>> sanList = x509Certificate.getSubjectAlternativeNames();
+        if (sanList == null || sanList.isEmpty()) return sans;
+
         for (List<?> san : sanList) {
             String title = "";
             Integer type = (Integer) san.get(0);
