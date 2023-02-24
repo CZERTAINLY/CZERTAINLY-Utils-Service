@@ -18,8 +18,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.util.Base64;
 
 @Service
 public class Pkcs10RequestUtilsServiceImpl implements RequestUtilsService {
@@ -31,7 +33,13 @@ public class Pkcs10RequestUtilsServiceImpl implements RequestUtilsService {
         parseRequestResponseDto.setType(RequestType.PKCS10);
         JcaPKCS10CertificationRequest jcaPKCS10CertificationRequest;
         try {
-            jcaPKCS10CertificationRequest = new JcaPKCS10CertificationRequest(parseRequestRequestDto.getRequest());
+            jcaPKCS10CertificationRequest = new JcaPKCS10CertificationRequest(
+                    Base64.getDecoder().decode(
+                            Pkcs10Tools.normalize(
+                                    parseRequestRequestDto.getRequest()
+                            ).getBytes(StandardCharsets.UTF_8)
+                    )
+            );
         } catch (IOException e) {
             throw new RequestUtilsException(HttpStatus.BAD_REQUEST, RequestUtilsError.REQUEST_PARSING_ERROR, e);
         }

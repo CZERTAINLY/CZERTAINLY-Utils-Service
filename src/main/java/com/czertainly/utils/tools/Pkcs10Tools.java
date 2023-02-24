@@ -53,4 +53,15 @@ public class Pkcs10Tools {
         }
         return attributes;
     }
+
+    public static String normalize(String csr) {
+        return csr
+                .replaceAll("-----BEGIN CERTIFICATE REQUEST-----", "")
+                .replaceAll(System.lineSeparator(), "")
+                .replaceAll("-----END CERTIFICATE REQUEST-----", "");
+    }
+
+    public static String normalize(byte[] csr) {
+        return normalize(new String(csr));
+    }
 }
