@@ -10,6 +10,8 @@ COPY docker /home/app/docker
 # Package stage
 FROM eclipse-temurin:17-jre-alpine
 
+MAINTAINER CZERTAINLY <support@czertainly.com>
+
 # add non root user czertainly
 RUN addgroup --system --gid 10001 czertainly && adduser --system --home /opt/czertainly --uid 10001 --ingroup czertainly czertainly
 
@@ -18,7 +20,9 @@ COPY --from=build /home/app/target/*.jar /opt/czertainly/app.jar
 
 WORKDIR /opt/czertainly
 
-EXPOSE 8080
+ENV PORT=8080
+ENV LOG_LEVEL=INFO
+ENV JAVA_OPTS=
 
 USER 10001
 
