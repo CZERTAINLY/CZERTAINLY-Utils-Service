@@ -12,14 +12,17 @@ import com.czertainly.utils.service.RequestUtilsService;
 import com.czertainly.utils.tools.Pkcs10Tools;
 import org.bouncycastle.asn1.ASN1Primitive;
 import org.bouncycastle.asn1.util.ASN1Dump;
+import org.bouncycastle.openssl.PEMParser;
 import org.bouncycastle.operator.DefaultSignatureNameFinder;
+import org.bouncycastle.pkcs.PKCS10CertificationRequest;
 import org.bouncycastle.pkcs.jcajce.JcaPKCS10CertificationRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
+import java.io.*;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.security.Security;
 
 @Service
 public class Pkcs10RequestUtilsServiceImpl implements RequestUtilsService {
@@ -31,7 +34,7 @@ public class Pkcs10RequestUtilsServiceImpl implements RequestUtilsService {
         parseRequestResponseDto.setType(RequestType.PKCS10);
         JcaPKCS10CertificationRequest jcaPKCS10CertificationRequest;
         try {
-            jcaPKCS10CertificationRequest = new JcaPKCS10CertificationRequest(parseRequestRequestDto.getRequest());
+            jcaPKCS10CertificationRequest = csrToJcaObject(parseRequestRequestDto.getRequest());
         } catch (IOException e) {
             throw new RequestUtilsException(HttpStatus.BAD_REQUEST, RequestUtilsError.REQUEST_PARSING_ERROR, e);
         }
@@ -85,6 +88,30 @@ public class Pkcs10RequestUtilsServiceImpl implements RequestUtilsService {
             throw new RequestUtilsException(HttpStatus.BAD_REQUEST, RequestUtilsError.REQUEST_ASN1_DUMP_ERROR, e);
         }
 
+    }
+
+    private JcaPKCS10CertificationRequest csrToJcaObject(byte[] csr) throws IOException {
+        PKCS10CertificationRequest csrRequest = convertPemToPKCS10CertificationRequest(csr);
+        if(csrRequest == null) return new JcaPKCS10CertificationRequest(csr);
+        else return new JcaPKCS10CertificationRequest(csrRequest);
+    }
+
+    private PKCS10CertificationRequest convertPemToPKCS10CertificationRequest(byte[] csrBytes) {
+        PKCS10CertificationRequest csr = null;
+        ByteArrayInputStream pemStream = new ByteArrayInputStream(csrBytes);
+
+        Reader pemReader = new BufferedReader(new InputStreamReader(pemStream));
+        PEMParser pemParser = new PEMParser(pemReader);
+
+        try {
+            Object parsedObj = pemParser.readObject();
+            if (parsedObj instanceof PKCS10CertificationRequest) {
+                csr = (PKCS10CertificationRequest) parsedObj;
+            }
+        } catch (IOException ex) {
+            return null;
+        }
+        return csr;
     }
 
 }
