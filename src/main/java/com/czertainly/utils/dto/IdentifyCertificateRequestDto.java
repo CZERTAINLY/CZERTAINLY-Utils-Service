@@ -13,7 +13,7 @@ import lombok.Setter;
 public class IdentifyCertificateRequestDto {
 
     @Schema(
-            description = "Base64-encoded data to be identified",
+            description = "Base64-encoded data to be identified in DER or PEM format",
             requiredMode = Schema.RequiredMode.REQUIRED,
             implementation = String.class
     )

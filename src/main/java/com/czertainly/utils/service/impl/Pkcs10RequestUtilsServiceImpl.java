@@ -97,7 +97,6 @@ public class Pkcs10RequestUtilsServiceImpl implements RequestUtilsService {
     }
 
     private PKCS10CertificationRequest convertPemToPKCS10CertificationRequest(byte[] csrBytes) {
-        Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());
         PKCS10CertificationRequest csr = null;
         ByteArrayInputStream pemStream = new ByteArrayInputStream(csrBytes);
 
