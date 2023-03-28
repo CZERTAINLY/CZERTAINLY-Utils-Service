@@ -12,12 +12,12 @@
 
     <groupId>com.czertainly</groupId>
     <artifactId>utils-service</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.0.0</version>
     <name>CZERTAINLY-Utils-Service</name>
 
     <properties>
         <java.version>17</java.version>
-        <apiVersion>1.0.0-SNAPSHOT</apiVersion>
+        <apiVersion>1.0.0</apiVersion>
         <sonar.projectKey>3KeyCompany_CZERTAINLY-Utils-Service</sonar.projectKey>
     </properties>
 
