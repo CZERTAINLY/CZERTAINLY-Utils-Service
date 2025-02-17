@@ -66,7 +66,7 @@ jobs:
       - name: Checkout docs repo
         uses: actions/checkout@v3
         with:
-          repository: 3KeyCompany/CZERTAINLY-Interface-Documentation
+          repository: CZERTAINLY/CZERTAINLY-Interface-Documentation
           token: ${{ secrets.GH_ACTIONS_PERSONAL_ACCESS_TOKEN }}
           path: docs
           ref: gh-pages
