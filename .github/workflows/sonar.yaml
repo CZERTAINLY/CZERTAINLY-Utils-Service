@@ -63,16 +63,7 @@ jobs:
           name: compiled-classes
           github-token: ${{ secrets.GITHUB_TOKEN }}
           run-id: ${{ github.event.workflow_run.id }}
-          path: ${{ runner.temp }}/artifacts/compiled-classes
-      # Verify and move compiled classes
-      - name: Verify and Move Compiled Classes
-        run: |
-          if [ -d "${{ runner.temp }}/artifacts/compiled-classes" ]; then
-            mv ${{ runner.temp }}/artifacts/compiled-classes/* target/classes/
-          else
-            echo "Compiled classes not found!"
-            exit 1
-          fi
+          path: target/classes
       # Download Jacoco XML coverage files
       - name: Download Coverage Reports
         uses: actions/download-artifact@v4
@@ -80,16 +71,7 @@ jobs:
           name: coverage-reports
           github-token: ${{ secrets.GITHUB_TOKEN }}
           run-id: ${{ github.event.workflow_run.id }}
-          path: ${{ runner.temp }}/artifacts/coverage-reports
-      # Verify and move coverage reports
-      - name: Verify and Move Coverage Reports
-        run: |
-          if [ -d "${{ runner.temp }}/artifacts/coverage-reports" ]; then
-            mv ${{ runner.temp }}/artifacts/coverage-reports/* target/site/jacoco/
-          else
-            echo "Coverage reports not found!"
-            exit 1
-          fi
+          path: target/site/jacoco
       # SonarCloud Scan analysis and push
       - name: SonarCloud Scan
         env:
