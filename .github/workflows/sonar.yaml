@@ -95,12 +95,13 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_REVISION: ${{ github.event.workflow_run.head_sha }}
           SONAR_PR_KEY: ${{ fromJson(steps.get_pr_data.outputs.data).number }}
           SONAR_PR_BRANCH: ${{ fromJson(steps.get_pr_data.outputs.data).head.ref }}
           SONAR_PR_BASE: ${{ fromJson(steps.get_pr_data.outputs.data).base.ref }}
         run: |
           mvn org.sonarsource.scanner.maven:sonar-maven-plugin:sonar \
-            -Dsonar.scm.revision=${{ github.event.workflow_run.head_sha }} \
+            -Dsonar.scm.revision=$SONAR_REVISION \
             -Dsonar.pullrequest.key=$SONAR_PR_KEY \
             -Dsonar.pullrequest.branch=$SONAR_PR_BRANCH \
             -Dsonar.pullrequest.base=$SONAR_PR_BASE
