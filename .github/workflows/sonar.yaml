@@ -10,6 +10,8 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 30
     if: github.event.workflow_run.conclusion == 'success'
+    env:
+      HEAD_BRANCH: ${{ github.event.workflow_run.head_branch }}
     permissions:
       actions: read
       contents: read
@@ -50,7 +52,7 @@ jobs:
           git remote add upstream ${{ github.event.repository.clone_url }}
           git fetch upstream
           git checkout -B ${{ fromJson(steps.get_pr_data.outputs.data).base.ref }} upstream/${{ fromJson(steps.get_pr_data.outputs.data).base.ref }}
-          git checkout ${{ github.event.workflow_run.head_branch }}
+          git checkout $HEAD_BRANCH
           git clean -ffdx && git reset --hard HEAD
       # Download compiled classes
       - name: Download Compiled Classes
