@@ -11,6 +11,11 @@ jobs:
   push_to_registry:
     name: Push Docker images
     runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+      packages: read
+      security-events: write
     steps:
       - name: Check out the repo
         uses: actions/checkout@v4
@@ -66,7 +71,7 @@ jobs:
           DIGEST: ${{ steps.build-and-push.outputs.digest }}
 
       - name: Push README to CZERTAINLY Docker Hub
-        uses: christian-korneck/update-container-description-action@v1
+        uses: christian-korneck/update-container-description-action@d36005551adeaba9698d8d67a296bd16fa91f8e8
         env:
           DOCKER_USER: ${{ secrets.DOCKER_HUB_CZERTAINLY_USERNAME }}
           DOCKER_PASS: ${{ secrets.DOCKER_HUB_CZERTAINLY_PASSWORD }}

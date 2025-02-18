@@ -9,6 +9,11 @@ jobs:
   push_to_registry:
     name: Build Docker images
     runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+      packages: read
+      security-events: write
     steps:
       - name: Check out the repo
         uses: actions/checkout@v4
