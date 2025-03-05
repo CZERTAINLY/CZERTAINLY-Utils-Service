@@ -16,6 +16,10 @@ management:
       base-path: '/'
       exposure:
         include: health
+      cors:
+        allowed-origins: '*'
+        allowed-methods: '*'
+        allowed-headers: '*'
   endpoint:
     health:
       probes:
