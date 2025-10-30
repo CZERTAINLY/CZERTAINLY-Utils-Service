@@ -12,7 +12,7 @@ jobs:
     name: Build
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v5
         with:
           fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
       - name: Set up JDK 21
@@ -38,7 +38,7 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: mvn -B -U verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar
       - name: Checkout docs repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v5
         with:
           repository: CZERTAINLY/CZERTAINLY-Interface-Documentation
           token: ${{ secrets.GH_ACTIONS_PERSONAL_ACCESS_TOKEN }}
